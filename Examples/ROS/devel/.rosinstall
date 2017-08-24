@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ensekitt/dev/orb_slam2_ws/ORB_SLAM2_ENSEKITT/Examples/ROS/devel/setup.sh
