@@ -6,8 +6,10 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   image_transport
   message_filters
+  message_generation
   cv_bridge
-  cmake_modules)
+  cmake_modules
+)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -Wall  -O3 -march=native ")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall  -O3 -march=native")
@@ -34,8 +36,6 @@ find_package(OpenCV 3.2.0 REQUIRED)
 find_package(Eigen3 3.1.0 REQUIRED)
 find_package(Pangolin REQUIRED)
 
-catkin_package()
-
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${PROJECT_SOURCE_DIR}/../../../../
@@ -52,6 +52,38 @@ ${Pangolin_LIBRARIES}
 ${PROJECT_SOURCE_DIR}/../../../../Thirdparty/DBoW2/lib/libDBoW2.so
 ${PROJECT_SOURCE_DIR}/../../../../Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/../../../../lib/libORB_SLAM2.so
+)
+
+add_message_files(
+  FILES
+  Num.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS message_runtime
+)
+
+add_executable(mono_pub
+src/ros_mono_pub.cc
+)
+
+target_link_libraries(mono_pub
+${LIBS}
+${catkin_LIBRARIES}
+)
+
+add_executable(mono_sub
+src/ros_mono_sub.cc
+)
+
+target_link_libraries(mono_sub
+${LIBS}
+${catkin_LIBRARIES}
 )
 
 # Node for monocular camera
